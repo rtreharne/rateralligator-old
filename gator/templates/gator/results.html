@@ -1,0 +1,76 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<h1><a href="{% url 'gator:detail' gator.slug %}">{{ gator }}</a></h1>
+{{ mean_rating|stringformat:".1f" }} ({{ total_rating }})
+{% for comment in comments %}
+    <p>{{ comment.text }} | {{ comment.rating.value }} | 
+        <a class="agreebutton" id="agree{{comment.id}}" href="#" data-catid="{{ comment.id  }}">Agree</a> (<agrees id="agrees{{comment.id}}">{{ comment.agree }}</agrees>) 
+        <a class="disagreebutton" id="disagree{{comment.id}}" href="#" data-catid="{{ comment.id  }}">Disagree</a> (<disagrees id="disagrees{{comment.id}}">{{ comment.disagree }}</disagrees>)
+        <a class="abusebutton" id="abuse{{comment.id}}" href="#" data-catid="{{ comment.id  }}">Abuse</a> (<abuses id="abuses{{comment.id}}">{{ comment.abuse }}</abuses>)
+
+    </p>     
+{% endfor %}
+
+<script>
+$('.agreebutton').click(function(event){
+    var catid;
+    catid = $(this).attr("data-catid");
+    $.ajax(
+    {
+        type:"GET",
+        url: "/gator/agree/",
+        data:{
+                 post_id: catid
+        },
+        success: function( data ) 
+        {
+            $( '#agree'+ catid ).replaceWith('Agree');
+            var a = parseInt($( '#agrees' + catid ).text())
+            $( '#agrees' + catid ).text(a+1)
+        }
+     })
+     event.preventDefault();
+});
+
+$('.disagreebutton').click(function(event){
+    var catid;
+    catid = $(this).attr("data-catid");
+    $.ajax(
+    {
+        type:"GET",
+        url: "/gator/disagree/",
+        data:{
+                 post_id: catid
+        },
+        success: function( data ) 
+        {
+            $( '#disagree'+ catid ).replaceWith('Disagree');
+            var d = parseInt($( '#disagrees' + catid ).text())
+            $( '#disagrees' + catid ).text(d+1)
+        }
+     })
+     event.preventDefault();
+});
+
+$('.abusebutton').click(function(event){
+    var catid;
+    catid = $(this).attr("data-catid");
+    $.ajax(
+    {
+        type:"GET",
+        url: "/gator/abuse/",
+        data:{
+                 post_id: catid
+        },
+        success: function( data ) 
+        {
+            $( '#abuse'+ catid ).replaceWith('Abuse');
+            var d = parseInt($( '#abuses' + catid ).text())
+            $( '#abuses' + catid ).text(d+1)
+        }
+     })
+     event.preventDefault();
+});
+</script>

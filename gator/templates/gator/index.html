@@ -1,0 +1,18 @@
+<h1>RaterAlligator</h1>
+
+<form action="{% url 'gator:index' %}" method="post" id="slugform">
+    {% csrf_token %}
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <input type="text" name="slug" placeholder="Enter gator slug"></input>   
+    <input type="submit" value="Submit">
+</form>
+
+{% if latest_gator_list %}
+    <ul>
+    {% for gator in latest_gator_list %}
+        <li><a href="{% url 'gator:detail' gator.slug %}">{{ gator.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Gators are available.</p>
+{% endif %}
