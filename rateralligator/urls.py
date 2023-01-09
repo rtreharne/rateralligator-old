@@ -19,5 +19,4 @@ from django.urls import include, path
 urlpatterns = [
     path('gator/', include('gator.urls')),
     path('admin/', admin.site.urls),
-    path('post/', include('post.urls')),
 ]

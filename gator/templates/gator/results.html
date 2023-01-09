@@ -1,7 +1,6 @@
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-</head>
+{% extends "gator/base.html" %}
 
+{% block content %}
 <h1><a href="{% url 'gator:detail' gator.slug %}">{{ gator }}</a></h1>
 {{ mean_rating|stringformat:".1f" }} ({{ total_rating }})
 {% for comment in comments %}
@@ -12,6 +11,9 @@
 
     </p>     
 {% endfor %}
+{% endblock %}
+
+{% block javascript %}
 
 <script>
 $('.agreebutton').click(function(event){
@@ -74,3 +76,4 @@ $('.abusebutton').click(function(event){
      event.preventDefault();
 });
 </script>
+{% endblock javascript %}

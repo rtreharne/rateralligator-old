@@ -1,18 +1,29 @@
-<h1>RaterAlligator</h1>
+{% extends "gator/base.html" %}
 
-<form action="{% url 'gator:index' %}" method="post" id="slugform">
-    {% csrf_token %}
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <input type="text" name="slug" placeholder="Enter gator slug"></input>   
-    <input type="submit" value="Submit">
-</form>
+{% block content %}
+<div class="container">
+    <h1>RaterAlligator</h1>
 
-{% if latest_gator_list %}
-    <ul>
-    {% for gator in latest_gator_list %}
-        <li><a href="{% url 'gator:detail' gator.slug %}">{{ gator.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No Gators are available.</p>
-{% endif %}
+    <form action="{% url 'gator:index' %}" method="post" id="slugform">
+        {% csrf_token %}
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <input type="text" name="slug" placeholder="Enter gator slug"></input>   
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+<div class="container">
+    <h2>Recently Used</h2>
+
+    {% if latest_gator_list %}
+
+        {% for gator in latest_gator_list %}
+            <p><a href="{% url 'gator:detail' gator.slug %}">{{ gator.name }}</a></p>
+        {% endfor %}
+
+    {% else %}
+        <p>No Gators are available.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,8 +1,70 @@
+{% extends "gator/base.html" %}
 
-<form action="{% url 'gator:detail' gator.slug %}" method="post">
+
+{% block content %}
+
+
+
+<style>
+    body {
+        color: dimgray
+    }
+    .fa-star, .fa-star-o {
+        color: #44d58c;
+        animation: fadeIn 0.8s;
+        cursor: pointer;
+    }
+   
+    div.star-container{
+        font-size: xxx-large;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+
+    }
+    form.hidden-form {
+        display: none
+    }
+    body {
+        padding: 0;
+    }
+    div.starter-template {
+        height: 85vh;
+    }
+
+    .visible {
+        display: inline-block;
+    }
+    .invisible {
+        display: none;
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    
+</style>
+
+<div class="star-container">
+    <h3>{{ gator }}</h3>
+    <div class="stars">
+        <i id="star-1-o" class="open fade-in fa fa-star-o fa-6 visible" aria-hidden="true"></i>
+        <i id="star-1" class="closed fa fa-star fa-6 invisible" aria-hidden="true"></i>
+        <i id="star-2-o" class="open fa fa-star-o fa-6 visible" aria-hidden="true"></i>
+        <i id="star-2" class="closed fa fa-star fa-6 invisible" aria-hidden="true"></i>
+        <i id="star-3-o" class="open fa fa-star-o fa-6 visible" aria-hidden="true"></i>
+        <i id="star-3" class="closed fa fa-star fa-6 invisible" aria-hidden="true"></i>
+        <i id="star-4-o" class="open fa fa-star-o fa-6 visible" aria-hidden="true"></i>
+        <i id="star-4" class="closed fa fa-star fa-6 invisible" aria-hidden="true"></i>
+        <i id="star-5-o" class="open fa fa-star-o fa-6 visible" aria-hidden="true"></i>
+        <i id="star-5" class="closed fa fa-star fa-6 invisible" aria-hidden="true"></i>
+    </div>
+</div>
+
+<form class="hidden-form" action="{% url 'gator:detail' gator.slug %}" method="post">
     {% csrf_token %}
     <fieldset>
-        <legend><h1>{{ gator }} ({{ gator.slug }})</h1></legend>
+        
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         {% for choice in choices %}
             <input type="radio" name="choice" id="{{ choice.0}}" value="{{ choice.0 }}">
@@ -11,3 +73,36 @@
     </fieldset>
     <input type="submit" value="Submit">
 </form>
+{% endblock %}
+
+{% block javascript %}
+<script>
+$('i').mouseenter(function() {
+    if ($(this).attr('id').indexOf('-o') > -1) {
+        $('.open').removeClass("invisible").addClass("Visible");
+        $('.closed').removeClass("visible").addClass("invisible");
+        var star = parseInt(this.id.slice(5, 6));
+        for( i=1; i<=star; i++) {  
+            $('#star-'+i).removeClass("invisible").addClass("visible")
+            $('#star-'+i+'-o').removeClass("visible").addClass("invisible")
+
+        }
+    } else {
+        var star = parseInt(this.id.slice(5, 6));
+        console.log("wtf")
+        for( i=star+1; i<=5; i++) {  
+            $('#star-'+i).removeClass("visible").addClass("invisible")
+            $('#star-'+i+'-o').removeClass("invisible").addClass("visible")
+
+        }
+
+    }  
+});
+$('div.stars').mouseleave(function() {
+    console.log("off stars");
+    $('.open').removeClass("invisible").addClass("Visible");
+    $('.closed').removeClass("visible").addClass("invisible");
+})
+</script>
+{% endblock %} 
+

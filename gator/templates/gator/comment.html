@@ -1,9 +1,13 @@
+{% extends "gator/base.html" %}
+
+{% block content %} 
 <form action="{% url 'gator:comment' response.id %}" method="post" id="commentform">
     {% csrf_token %}
 
     <legend><h1>{{ response.gator}} ({{ response.gator.slug }})</h1></legend>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <textarea rows="4" cols="50" name="comment" form="commentform"></textarea>   
+    <textarea rows="4" cols="50" name="comment" form="commentform"></textarea> <br>  
     <input type="submit" value="Submit">
 </form>
 <a href="{% url 'gator:results' response.gator.slug %}">Continue</a>
+{% endblock %} 
